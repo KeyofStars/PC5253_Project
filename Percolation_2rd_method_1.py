@@ -1,8 +1,11 @@
+# This script is to do the percolation for all months' data
+
 import networkx as nx
 import pickle
 import random
 import matplotlib.pyplot as plt
 import time
+import pandas as pd
 
 # Load one month's data
 def load_monthly_network(month_to_load):
@@ -110,17 +113,32 @@ def simulation(G, num_simulations):
         results.append(result)
     return results
 
+def Calculate_All_Months(num_simulations):
+    # Generate date range from 1999-01 to 2001-07
+    date_range = pd.date_range(start='1999-01', end='2001-08', freq='ME')
+    formatted_dates = date_range.strftime('%Y-%m').tolist()
+
+    ratio_per_month = []
+    for month in formatted_dates:
+        loaded_graph = load_monthly_network(month)
+        simulation_results_month = simulation(loaded_graph, num_simulations)
+        average = sum(simulation_results_month) / len(simulation_results_month)
+        ratio_per_month.append(average)
+    return formatted_dates,ratio_per_month
+
+def plot_percolation_ratio(date,ratio_per_month):
+    plt.plot(date, ratio_per_month)
+    plt.xlabel('Date')
+    plt.ylabel('Remaining edge ratio')
+    plt.title('Remaining edge ratio over time')
+    plt.xticks(rotation=45)
+    plt.grid(True)
+    plt.show()
 
 def main():
-    # Load the data
-    G = load_monthly_network("2001-05")
-    num_simulations = 500
-    print(f"Number of edges: {G.number_of_edges()}")
-    tic = time.time()
-    simulation_results = simulation(G, num_simulations)
-    toc = time.time()
-    average = sum(simulation_results) / len(simulation_results)
-    print(f"Average: {average:.4f}")
-    print(f"Elapsed time: {toc - tic:.2f} seconds")
+    num_simulations = 5
+    date,ratio_per_month = Calculate_All_Months(num_simulations)
+    plot_percolation_ratio(date,ratio_per_month)
+
 if __name__ == "__main__":
     main()
