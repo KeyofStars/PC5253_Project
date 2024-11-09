@@ -89,11 +89,11 @@ def plot_percolation(graph, month_to_load, num_iterations=100, removed_range=(0.
         #component_fraction.append(avg_final_size / total_nodes)
     
     # Plot the results
-    plt.plot(removed_fraction, component_fraction)
-    plt.xlabel("Fraction of Nodes Removed")
-    plt.ylabel("Fraction of Largest Component")
+    phi = removed_fraction[::-1]
+    plt.plot(phi, component_fraction)
+    plt.xlabel(r"$\Phi$")
+    plt.ylabel("Giant Cluster Size")
     plt.title("Percolation Curve")
-    plt.show()
 
     # Save the plot
     plt.savefig(f"./percolation_figure/{month_to_load}.png")
