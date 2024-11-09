@@ -1,3 +1,5 @@
+# This script is to test reading the monthly network files and plotting the fraction of the largest connected component over time
+
 import pickle
 import matplotlib.pyplot as plt
 import networkx as nx

@@ -1,3 +1,5 @@
+# This script is to use advanced methods to do the percolation for one month's data
+
 import networkx as nx
 import pickle
 import random
