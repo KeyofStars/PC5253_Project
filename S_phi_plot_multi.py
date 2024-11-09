@@ -1,3 +1,6 @@
+# This file is to calculate largest component size after removing a fraction of nodes from the network.
+# And it uses multithreading to speed up the process.
+
 import concurrent.futures
 import pickle
 import networkx as nx
