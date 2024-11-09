@@ -49,9 +49,11 @@ def random_edge_removal(G):
     remove_self_connected_nodes(G)
     retain_5_percent_edges(G)
     
-    second_largest_list = []
+    second_largest_list = [] # Use this to track the second largest component size and plot it later
+
     prev_second_largest = sorted(get_components_info(G)[1])[-2] if len(get_components_info(G)[1]) >= 2 else 0
     second_largest_list.append(prev_second_largest)
+
     found_decreasing = False
     found_increasing = False
     point_decrease_list = []
@@ -65,39 +67,37 @@ def random_edge_removal(G):
         edge_to_remove = random.choice(remaining_edges)
         G.remove_edge(*edge_to_remove[:3])  # remove a random edge
 
+
         # calculate the number of components and their sizes after removing the edge
         new_num_components, new_component_sizes = get_components_info(G)
         
         # compare the second largest component size
         if len(new_component_sizes) < 2:
-            print(f"Number of edges: {G.number_of_edges()}")
-            break  # if less than 2 components, break
-
-        new_second_largest = sorted(new_component_sizes)[-2] if len(new_component_sizes) >= 2 else 0
-        second_largest_list.append(new_second_largest)
-
-        if new_second_largest < prev_second_largest:
-            if not found_decreasing:
-                found_decreasing = True
-                print("Second largest component started decreasing.")
-                ratio_decrease = calculate_remaining_edge_ratio(G, initial_edge_count)
-                point_decrease_list.append(ratio_decrease)
-            found_increasing = False
-        elif new_second_largest > prev_second_largest:
-            if not found_increasing:
-                found_increasing = True
-                print("Second largest component started increasing.")
-                calculate_remaining_edge_ratio(G, initial_edge_count)
-
-            found_decreasing = False
+            #print(f"Number of edges: {G.number_of_edges()}")
+            pass  # if less than 2 components, break
         else:
-            # if the second largest component size remains the same,
-            pass
+            new_second_largest = sorted(new_component_sizes)[-2] if len(new_component_sizes) >= 2 else 0
+            second_largest_list.append(new_second_largest)
 
-        # track the component info
-        prev_second_largest = new_second_largest
-        #print(f"Number of components: {new_num_components}")
-        #print(f"Sizes of components: {new_component_sizes}")
+            if new_second_largest < prev_second_largest:
+                if not found_decreasing:
+                    found_decreasing = True
+                    print("Second largest component started decreasing.")
+                    ratio_decrease = calculate_remaining_edge_ratio(G, initial_edge_count)
+                    point_decrease_list.append(ratio_decrease)
+                found_increasing = False
+            elif new_second_largest > prev_second_largest:
+                if not found_increasing:
+                    found_increasing = True
+                    print("Second largest component started increasing.")
+                    calculate_remaining_edge_ratio(G, initial_edge_count)
+
+                found_decreasing = False
+            else:
+                # if the second largest component size remains the same,
+                pass
+            
+            prev_second_largest = new_second_largest
 
     result = point_decrease_list[-1] if point_decrease_list else 0
     return result
@@ -114,7 +114,7 @@ def simulation(G, num_simulations):
 def main():
     # Load the data
     G = load_monthly_network("2001-05")
-    num_simulations = 500
+    num_simulations = 10
     print(f"Number of edges: {G.number_of_edges()}")
     tic = time.time()
     simulation_results = simulation(G, num_simulations)
