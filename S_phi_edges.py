@@ -27,7 +27,7 @@ def remove_absorbing_edges(graph):
 def bond_percolation(graph, p):
     H = graph.copy()
     for edge in list(H.edges()):
-        if random.random() < p:
+        if random.random() > p:
             H.remove_edge(edge[0], edge[1])
     return H
 
@@ -78,7 +78,7 @@ def plot_percolation_curve(graph, month_to_load, num_iterations=50, removed_rang
     total_edges = nx.number_of_edges(graph)
     print(f"Month: {month_to_load}, Total edges: {total_edges}")
 
-    removal_fractions = [round(x * step, 2) for x in range(int(removed_range[0]/step), int(removed_range[1]/step)+1)]
+    removal_fractions = [round(x * step, 5) for x in range(int(removed_range[0]/step), int(removed_range[1]/step)+1)]
     component_sizes = []
     initial_sizes = []
 
@@ -91,12 +91,12 @@ def plot_percolation_curve(graph, month_to_load, num_iterations=50, removed_rang
         print(f"Removal Fraction: {removal_fraction}, Initial Size: {avg_initial_size}, Final Size: {avg_final_size}")
         print(f"Time taken: {toc - tic:.2f} seconds")
 
-    phi = removal_fractions[::-1]
     plt.figure()
-    plt.plot(phi, component_sizes, label="Final Component Size")
+    plt.plot(removal_fractions, component_sizes, label="Final Component Size")
     plt.xlabel(r"$\Phi$")
     plt.ylabel("Component Size")
     plt.title(f"Component Size vs. Phi for {month_to_load}")
+    plt.show()
 
     return
 
