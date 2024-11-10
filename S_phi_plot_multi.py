@@ -85,12 +85,12 @@ def plot_percolation(graph, month_to_load, num_iterations=500, removed_range=(0.
         avg_initial_size, avg_final_size = percolation(graph, fraction, num_iterations)
         true_size = math.ceil(avg_initial_size - nx.number_of_nodes(graph) * fraction)
         print(f"Fraction: {fraction}, True size: {true_size}, Final size: {avg_final_size}")
-        if true_size == 0:
-            component_fraction.append(0)
-        elif true_size < avg_final_size:
-            component_fraction.append(0)
-        else:
-            component_fraction.append(avg_final_size / true_size)
+        # if true_size == 0:
+        #     component_fraction.append(0)
+        # elif true_size < avg_final_size:
+        #     component_fraction.append(0)
+        # else:
+        component_fraction.append(avg_final_size)
         #component_fraction.append(avg_final_size / total_nodes)
     
     # Plot the results
@@ -110,7 +110,7 @@ def plot_percolation(graph, month_to_load, num_iterations=500, removed_range=(0.
 # Main function
 def main():
     # Generate date range from 1999-01 to 2001-07
-    date_range = pd.date_range(start='1999-01', end='2001-08', freq='ME')
+    date_range = pd.date_range(start='2001-07', end='2001-08', freq='ME')
     formatted_dates = date_range.strftime('%Y-%m').tolist()
     for month in formatted_dates:
         loaded_graph = load_monthly_network(month)
