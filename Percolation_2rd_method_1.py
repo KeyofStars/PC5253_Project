@@ -114,8 +114,8 @@ def simulation(G, num_simulations):
     return results
 
 def Calculate_All_Months(num_simulations):
-    # Generate date range from 1999-01 to 2001-07
-    date_range = pd.date_range(start='1999-01', end='2001-08', freq='ME')
+    # Generate date range from 1999-05 to 2002-05
+    date_range = pd.date_range(start='1999-05', end='2002-06', freq='ME')
     formatted_dates = date_range.strftime('%Y-%m').tolist()
 
     ratio_per_month = []
@@ -127,16 +127,17 @@ def Calculate_All_Months(num_simulations):
     return formatted_dates,ratio_per_month
 
 def plot_percolation_ratio(date,ratio_per_month):
+    plt.figure(figsize=(14,7))
     plt.plot(date, ratio_per_month)
     plt.xlabel('Date')
-    plt.ylabel('Remaining edge ratio')
-    plt.title('Remaining edge ratio over time')
+    plt.ylabel(r'$ \Phi_c $')
+    plt.title(r'$\Phi_c$ over time')
     plt.xticks(rotation=45)
     plt.grid(True)
     plt.show()
 
 def main():
-    num_simulations = 5
+    num_simulations = 1000
     date,ratio_per_month = Calculate_All_Months(num_simulations)
     plot_percolation_ratio(date,ratio_per_month)
 
