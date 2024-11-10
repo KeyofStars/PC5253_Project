@@ -1,4 +1,5 @@
 # This file is to calculate largest component size after removing a fraction of edges from the network.
+# And it uses multithreading to speed up the process.
 
 import time
 import pickle
@@ -74,7 +75,7 @@ def percolation(graph, removal_fraction=0.1, num_iterations=100):
 
     return average_initial_size, average_final_size
 
-def plot_percolation_curve(graph, month_to_load, num_iterations=50, removed_range=(0.0, 1.0), step=0.01):
+def plot_percolation_curve(graph, month_to_load, num_iterations=100, removed_range=(0.0, 1.0), step=0.01):
     total_edges = nx.number_of_edges(graph)
     print(f"Month: {month_to_load}, Total edges: {total_edges}")
 
@@ -90,13 +91,14 @@ def plot_percolation_curve(graph, month_to_load, num_iterations=50, removed_rang
         initial_sizes.append(avg_initial_size)
         print(f"Removal Fraction: {removal_fraction}, Initial Size: {avg_initial_size}, Final Size: {avg_final_size}")
         print(f"Time taken: {toc - tic:.2f} seconds")
+    component_sizes = [size/initial_sizes[0] for size in component_sizes]
 
     plt.figure()
     plt.plot(removal_fractions, component_sizes, label="Final Component Size")
     plt.xlabel(r"$\Phi$")
-    plt.ylabel("Component Size")
+    plt.ylabel("Component Size(fractional)")
     plt.title(f"Component Size vs. Phi for {month_to_load}")
-    plt.show()
+    plt.savefig(f"S_Phi_figure/{month_to_load}_percolation.png")
 
     return
 
