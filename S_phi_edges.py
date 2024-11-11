@@ -103,8 +103,8 @@ def plot_percolation_curve(graph, month_to_load, num_iterations=100, removed_ran
     return
 
 def main():
-    # Generate date range from 1999-01 to 2001-07
-    date_range = pd.date_range(start='2001-07', end='2001-08', freq='ME')
+    # Generate date range from 1999-05 to 2002-05
+    date_range = pd.date_range(start='1999-05', end='2002-06', freq='ME')
     formatted_dates = date_range.strftime('%Y-%m').tolist()
     for month in formatted_dates:
         loaded_graph = load_monthly_network(month)
